@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta property="og:image" content="..."> 
+   
     <title>eTrade || Single Product Style 3</title>
     <meta name="robots" content="noindex, follow">
     <meta name="description" content="">
@@ -1528,32 +1528,64 @@
 <!--  w -->
 <script>
   document.addEventListener("DOMContentLoaded", () => {
+    const product = JSON.parse(localStorage.getItem("selectedProduct"));
+
+    if (product) {
+      // Dynamically update Open Graph meta tags
+      const setMetaTag = (property, content) => {
+        let tag = document.querySelector(`meta[property='${property}']`);
+        if (!tag) {
+          tag = document.createElement("meta");
+          tag.setAttribute("property", property);
+          document.head.appendChild(tag);
+        }
+        tag.setAttribute("content", content);
+      };
+
+      setMetaTag("og:title", product.title);
+      setMetaTag("og:description", `Order now for just ₹${product.price}`);
+      setMetaTag("og:image", product.image);
+      setMetaTag("og:url", window.location.href);
+      setMetaTag("og:type", "product");
+
+      // Also update actual visible content
+      document.getElementById("product-title").textContent = product.title;
+      document.getElementById("product-price").textContent = "₹" + product.price;
+
+      const images = document.getElementsByClassName("product-image");
+      for (let i = 0; i < images.length; i++) {
+        images[i].src = product.image;
+      }
+    }
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
     const buyBtn = document.querySelector(".add-to-cart a");
 
     buyBtn.addEventListener("click", function (e) {
       e.preventDefault();
 
-      const title = document.getElementById("product-title").textContent.trim();
-      const price = document.getElementById("product-price").textContent.trim();
-      const image = document.querySelector(".product-image")?.src || "";
+      const product = JSON.parse(localStorage.getItem("selectedProduct"));
 
+      if (!product) return;
+
+      const title = product.title;
+      const price = "₹" + product.price;
+      const image = product.image;
       const phoneNumber = "919636453365";
 
-      // Elegant card-style message with preview image
-      const message = `
-${image}
+      const message =
+`🛍️ *Product Order Request*
 
-🛍️ *Product Order Request*
-╔═══════════════════════╗
 📦 *Product:* ${title}
 💰 *Price:* ${price}
-🛒 *Quantity:* 1
-🗓️ *Order Date:* ${new Date().toLocaleDateString()}
-╚═══════════════════════╝
+🖼️ *Image Preview:* ${image}
+🔢 *Quantity:* 1
+📅 *Order Date:* ${new Date().toLocaleDateString()}
 
 ✅ I would like to place this order.
-Please confirm availability.
-      `.trim();
+Please confirm availability.`;
 
       const encodedMessage = encodeURIComponent(message);
       const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
