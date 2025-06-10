@@ -255,31 +255,31 @@
                                     <div class="single-product-thumbnail-wrap zoom-gallery">
                                         <div class="single-product-thumbnail product-large-thumbnail-3 axil-product">
                                             <div class="thumbnail">
-                                                <a href="assets/images/product/product-big-01.png" class="popup-zoom">
-                                                    <img src="assets/images/product/product-big-01.png" alt="Product Images">
-                                                </a>
+                                                <!-- <a href="assets/images/product/product-big-01.png" class="popup-zoom"> -->
+                                                    <img class="product-image" src="" alt="Product Images">
+                                                <!-- </a> -->
                                             </div>
                                             <div class="thumbnail">
-                                                <a href="assets/images/product/product-big-02.png" class="popup-zoom">
-                                                    <img src="assets/images/product/product-big-02.png" alt="Product Images">
-                                                </a>
+                                                <!-- <a href="assets/images/product/product-big-02.png" class="popup-zoom"> -->
+                                                    <img class="product-image" src="" alt="Product Images">
+                                                <!-- </a> -->
                                             </div>
                                             <div class="thumbnail">
-                                                <a href="assets/images/product/product-big-03.png" class="popup-zoom">
-                                                    <img src="assets/images/product/product-big-03.png" alt="Product Images">
-                                                </a>
+                                                <!-- <a href="assets/images/product/product-big-03.png" class="popup-zoom"> -->
+                                                    <img class="product-image" src="" alt="Product Images">
+                                                <!-- </a> -->
                                             </div>
                                             <div class="thumbnail">
-                                                <a href="assets/images/product/product-big-02.png" class="popup-zoom">
-                                                    <img src="assets/images/product/product-big-02.png" alt="Product Images">
-                                                </a>
+                                                <!-- <a href="assets/images/product/product-big-02.png" class="popup-zoom"> -->
+                                                    <img class="product-image" src="" alt="Product Images">
+                                                <!-- </a> -->
                                             </div>
                                         </div>
                                         <div class="label-block">
                                             <div class="product-badget">20% OFF</div>
                                         </div>
                                         <div class="product-quick-view position-view">
-                                            <a href="assets/images/product/product-big-01.png" class="popup-zoom">
+                                            <a  href="assets/images/product/product-big-01.png" class="popup-zoom">
                                                 <i class="far fa-search-plus"></i>
                                             </a>
                                         </div>
@@ -288,16 +288,16 @@
                                 <div class="col-lg-2 order-lg-1">
                                     <div class="product-small-thumb-3 small-thumb-wrapper">
                                         <div class="small-thumb-img">
-                                            <img src="assets/images/product/product-thumb/thumb-08.png" alt="thumb image">
+                                            <img  class="product-image" src="" alt="thumb image">
                                         </div>
                                         <div class="small-thumb-img">
-                                            <img src="assets/images/product/product-thumb/thumb-07.png" alt="thumb image">
+                                            <img class="product-image" src="" alt="thumb image">
                                         </div>
                                         <div class="small-thumb-img">
-                                            <img src="assets/images/product/product-thumb/thumb-09.png" alt="thumb image">
+                                            <img class="product-image" src="" alt="thumb image">
                                         </div>
                                         <div class="small-thumb-img">
-                                            <img src="assets/images/product/product-thumb/thumb-07.png" alt="thumb image">
+                                            <img  class="product-image" src="" alt="thumb image">
                                         </div>
                                     </div>
                                 </div>
@@ -306,8 +306,8 @@
                         <div class="col-lg-5 mb--40">
                             <div class="single-product-content">
                                 <div class="inner">
-                                    <h2 class="product-title">3D™ wireless headset</h2>
-                                    <span class="price-amount">$155.00 - $255.00</span>
+                                    <h2 class="product-title " id="product-title"></h2>
+                                    <span class="price-amount" id="product-price"></span>
                                     <div class="product-rating">
                                         <div class="star-rating">
                                             <i class="fas fa-star"></i>
@@ -368,8 +368,8 @@
 
                                         <!-- Start Product Action  -->
                                         <ul class="product-action d-flex-center mb--0">
-                                            <li class="add-to-cart"><a href="cart.html" class="axil-btn btn-bg-primary">Add to Cart</a></li>
-                                            <li class="wishlist"><a href="wishlist.html" class="axil-btn wishlist-btn"><i class="far fa-heart"></i></a></li>
+                                            <li class="add-to-cart"><a href="#" class="axil-btn btn-bg-primary">Buy Now</a></li>
+                                            <!-- <li class="wishlist"><a href="wishlist.html" class="axil-btn wishlist-btn"><i class="far fa-heart"></i></a></li> -->
                                         </ul>
                                         <!-- End Product Action  -->
 
@@ -1504,6 +1504,64 @@
 
     <!-- JS
 ============================================ -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const product = JSON.parse(localStorage.getItem("selectedProduct"));
+
+    if (product) {
+      // Title
+      document.getElementById("product-title").textContent = product.title;
+
+      // Image (multiple places)
+      const images = document.getElementsByClassName("product-image");
+      for (let i = 0; i < images.length; i++) {
+        images[i].src = product.image;
+      }
+
+      // Price
+      document.getElementById("product-price").textContent = "₹" + product.price;
+    }
+  });
+</script>
+
+<!--  w -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const buyBtn = document.querySelector(".add-to-cart a");
+
+    buyBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      const title = document.getElementById("product-title").textContent.trim();
+      const price = document.getElementById("product-price").textContent.trim();
+      const image = document.querySelector(".product-image")?.src || "";
+
+      const phoneNumber = "919636453365";
+
+      // Elegant card-style message with preview image
+      const message = `
+${image}
+
+🛍️ *Product Order Request*
+╔═══════════════════════╗
+📦 *Product:* ${title}
+💰 *Price:* ${price}
+🛒 *Quantity:* 1
+🗓️ *Order Date:* ${new Date().toLocaleDateString()}
+╚═══════════════════════╝
+
+✅ I would like to place this order.
+Please confirm availability.
+      `.trim();
+
+      const encodedMessage = encodeURIComponent(message);
+      const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+      window.open(whatsappURL, "_blank");
+    });
+  });
+</script>
+  <!-- w -->
     <!-- Modernizer JS -->
     <script src="assets/js/vendor/modernizr.min.js"></script>
     <!-- jQuery JS -->
